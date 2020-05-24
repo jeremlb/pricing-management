@@ -1,12 +1,12 @@
 import { createModule } from '../../vuex.helpers';
-import actions from './user.actions';
-import getters from './user.getters';
-import mutations from './user.mutations';
-import state, { UserState } from './user.state';
+import actions from './cart.actions';
+import getters from './cart.getters';
+import mutations from './cart.mutations';
+import state, { CartState } from './cart.state';
 
-export { UserState };
+export { CartState };
 
-export default createModule<UserState>()({
+export default createModule<CartState>()({
   actions: actions as any,
   getters,
   mutations,

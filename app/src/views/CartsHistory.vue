@@ -1,28 +1,20 @@
 <template>
-  <div class="login">
-    coucou
-    <button @click="logAs('user')">Log as user</button>
-    <button @click="logAs('admin')">Log as admin</button>
+  <div class="carts-history">
+    {{ carts }}
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { UserAction } from '../store/user/user.actions';
-import { UserType } from '../models';
-import { mapGetters } from 'vuex';
+import { CartAction } from '../store/carts/cart.actions';
+import { Cart } from '../models';
 
-@Component({
-  computed: { ...mapGetters([]) },
-})
+@Component({})
 export default class CartHistory extends Vue {
-  async beforeMount() {
-    await this.$store.dispatch(UserAction.setUser, null);
-  }
+  carts: Cart[] = [];
 
-  async logAs(userType: UserType) {
-    await this.$store.dispatch(UserAction.setUser, { type: userType });
-    await this.$router.push({ name: 'products' });
+  async beforeMount() {
+    this.carts = await this.$store.dispatch(CartAction.getCarts);
   }
 }
 </script>
