@@ -19,11 +19,11 @@ export class CouponsService {
     let coupons: Coupon[] = Object.values(COUPONS);
 
     if (from) {
-      coupons = coupons.filter(product => (product.createdAt >= new Date(from)));
+      coupons = coupons.filter(coupon => (coupon.createdAt >= from));
     }
 
     if (to) {
-      coupons = coupons.filter(product => (product.createdAt < new Date(to)));
+      coupons = coupons.filter(coupon => (coupon.createdAt < to));
     }
 
     return coupons;

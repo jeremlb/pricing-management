@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
-import { Product, Coupon, CouponType } from "src/models";
+import { Product, Coupon, CouponType, Cart } from "src/models";
 
 // helpers
 function randomDate(start, end): Date {
@@ -43,7 +43,7 @@ export const PRODUCTS_CONSTANT: { [id: string]: Product } = {
 export const COUPONS_CONSTANT: { [id: string]: Coupon } = {
   '594543a8-2978-4ff2-abff-f11d026c3c75': {
     id: '594543a8-2978-4ff2-abff-f11d026c3c75',
-    code: 'COUPON_P',
+    code: 'COUPON_A',
     type: CouponType.Amount,
     value: 10,
     createdAt: new Date('0528-09-03T18:39:37.769Z'),
@@ -51,12 +51,27 @@ export const COUPONS_CONSTANT: { [id: string]: Coupon } = {
   },
   'cfa0d5e5-59d1-44ce-a9df-1a3ed525604d': {
     id: 'cfa0d5e5-59d1-44ce-a9df-1a3ed525604d',
-    code: 'COUPON_A',
+    code: 'COUPON_P',
     type: CouponType.Percent,
     value: 0.1,
     createdAt: new Date('0355-02-14T09:57:11.750Z'),
     updateAt: null
   },
+};
+
+export const CARTS_CONSTANT: { [id: string]: Cart } = {
+  '90512cc5-647b-4b45-8a75-fb29dc995c43': {
+    id: '90512cc5-647b-4b45-8a75-fb29dc995c43',
+    content: [
+      {
+        quantity: 1,
+        productId: 'fe51f619-354a-4cb1-8536-251864b017cc'
+      }
+    ],
+    coupon: 'COUPON_P',
+    createdAt: new Date('2020-05-24T11:16:12.970Z'),
+    updateAt: null
+  }
 };
 
 const min = 1;

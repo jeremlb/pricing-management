@@ -1,9 +1,10 @@
-import { BasketsController } from './baskets.controller';
-import { ProductsController } from './products.controller';
+import { CartsController } from './carts.controller';
 import { CouponsController } from './coupons.controller';
+import { ProductsController } from './products.controller';
 
-export * from './baskets.controller';
-export * from './products.controller';
+export * from './carts.controller';
 export * from './coupons.controller';
+export * from './products.controller';
 
-export const controllers = [BasketsController, CouponsController, ProductsController]
+
+export const controllers = [CartsController, CouponsController, ProductsController];

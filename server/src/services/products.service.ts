@@ -16,11 +16,11 @@ export class ProductsService {
     let products: Product[] = Object.values(PRODUCTS);
 
     if (from) {
-      products = products.filter(product => (product.createdAt >= new Date(from)));
+      products = products.filter(product => (product.createdAt >= from));
     }
 
     if (to) {
-      products = products.filter(product => (product.createdAt < new Date(to)));
+      products = products.filter(product => (product.createdAt < to));
     }
 
     return products;
