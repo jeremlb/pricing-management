@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { Product, CreateProductDto } from 'src/models';
-import { PRODUCTS_CONSTANT } from './products.constant';
+import { Injectable, BadRequestException } from '@nestjs/common';
 const { v4: uuidv4 } = require('uuid');
 
-const PRODUCTS: { [id: string]: Product; } = { ...PRODUCTS_CONSTANT };
+import { PRODUCTS_CONSTANT } from './constant';
+import { Product, CreateProductDto, ProductPromotionDto, PromotionType } from 'src/models';
+
+let PRODUCTS: { [id: string]: Product; } = { ...PRODUCTS_CONSTANT };
 
 @Injectable()
 export class ProductsService {
@@ -46,5 +47,30 @@ export class ProductsService {
     }
 
     return false;
+  }
+
+  addPromotion(id: string, payload: ProductPromotionDto) {
+    if (payload.type === PromotionType.Pack && payload.quantity < payload.for) {
+      throw new BadRequestException();
+    }
+
+    if (PRODUCTS[id]) {
+      PRODUCTS[id] = { ...PRODUCTS[id], updateAt: new Date(), promotion: payload };
+    }
+    return PRODUCTS[id];
+  }
+
+  deletePromotion(id: string): boolean {
+    if (PRODUCTS[id]) {
+      delete PRODUCTS[id].promotion;
+      PRODUCTS[id].updateAt = new Date();
+      return true;
+    }
+
+    return false;
+  }
+
+  resetDataset() {
+    PRODUCTS = { ...PRODUCTS_CONSTANT };
   }
 }

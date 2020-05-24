@@ -2,8 +2,9 @@ import { Controller, Get, Param, Post, Put, Delete, Body, Query, HttpCode, NotFo
 import { Product, CreateProductDto } from 'src/models';
 import { ProductsService } from 'src/services';
 import { ParseDatePipe } from 'src/pipes';
+import { ProductPromotionDto } from 'src/models/product.promotion.request';
 
-@Controller('products')
+@Controller('v1/products')
 export class ProductsController {
   constructor(private products: ProductsService) { }
 
@@ -39,5 +40,23 @@ export class ProductsController {
     if (!this.products.delete(id)) {
       throw new NotFoundException();
     }
+  }
+
+  @Post(':id/promotions')
+  async addSales(@Param('id') id: string, @Body() payload: ProductPromotionDto): Promise<Product> {
+    return this.products.addPromotion(id, payload);
+  }
+
+  @Delete(':id/promotions')
+  async deleteSales(@Param('id') id: string) {
+    if (!this.products.deletePromotion(id)) {
+      throw new NotFoundException();
+    }
+  }
+
+  // reset the dataset
+  @Post('reset')
+  async reset() {
+    this.products.resetDataset();
   }
 }
