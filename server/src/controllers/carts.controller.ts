@@ -29,6 +29,12 @@ export class CartsController {
     return cart;
   }
 
+  @Get(':id/amount')
+  async getCartAmount(@Param('id') id: string): Promise<{ amount: number }> { 
+    const cart = await this.getById(id);
+    return { amount: this.carts.getCartAmount(cart) };
+  }
+
   @Put(':id')
   async update(@Param('id') id: string, @Body() payload: CreateCartDto): Promise<Cart> {
     return this.carts.update(id, payload);

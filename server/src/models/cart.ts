@@ -1,11 +1,11 @@
-export interface CartContent {
+export interface CartItem {
     productId: string;
     quantity: number;
 }
 
 export class Cart {
     id: string;
-    content?: CartContent[];
+    items?: CartItem[];
     coupon?: string;
     createdAt: Date;
     updateAt?: Date;

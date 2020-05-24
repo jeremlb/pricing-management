@@ -1,5 +1,5 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { Cart, CreateCartDto, CartContent } from 'src/models';
+import { Cart, CreateCartDto, CartItem, CouponType, Product, PromotionType } from 'src/models';
 import { ProductsService } from './products.service';
 import { CouponsService } from './coupons.service';
 import { CARTS_CONSTANT } from './constant';
@@ -37,7 +37,7 @@ export class CartsService {
       throw new BadRequestException(); // coupons doesn't exist
     }
 
-    this.chackCartContent(payload.content);
+    this.checkCartItem(payload.items);
 
     CARTS[id] = { id, ...payload, createdAt: new Date(), updateAt: null };
     return CARTS[id];
@@ -59,16 +59,76 @@ export class CartsService {
     return false;
   }
 
+  getCartAmount(cart: Cart): number {
+    let amount = this.getItemsAmount(cart.items);
+
+    if (cart.coupon) {
+      amount = this.applyCartCoupon(amount, cart.coupon);
+    }
+
+    return Math.round(amount * 100) / 100;
+  }
+
   resetDataset() {
     CARTS = { ...CARTS_CONSTANT };
   }
 
-  private chackCartContent(content: CartContent[]) {
-    for (let item of content) {
+  private checkCartItem(items: CartItem[]) {
+    for (let item of items) {
       if (!this.products.getById(item.productId)) { 
         console.log(`PRODUCT ${item.productId} doesn't exist`);
         throw new BadRequestException() // product doesn't exist
       }
     } 
+  }
+
+  private applyCartCoupon(amount: number, code: string): number {
+    const coupon = this.coupons.getByCode(code);
+
+    if (!coupon) { return amount; }
+
+    switch(coupon.type) {
+      case CouponType.Amount: {
+        return amount - coupon.value > 0 ? amount - coupon.value : 0;
+      }
+      case CouponType.Percent: {
+        // the value is between 0 and 1
+        return amount * (1 - coupon.value);
+        break;
+      }
+    }
+  }
+
+  private getItemsAmount(items: CartItem[]): number {
+    let amount = 0;
+
+    for (let item of items) {
+      const product = this.products.getById(item.productId);
+
+      if (product) {
+        amount += this.getProductAmount(product, item.quantity);
+      }
+    }
+
+    return amount;
+  }
+
+  private getProductAmount(product: Product, quantity: number): number {
+    if (!product.promotion) {
+      return product.price * quantity;
+    }
+
+    switch(product.promotion.type) {
+      case PromotionType.Pack: {
+        const promotion = product.promotion;
+        const fullPriceQty = quantity % promotion.quantity;
+        const promotionQty = Math.trunc(quantity / promotion.quantity);
+    
+        return product.price * (promotionQty * promotion.for + fullPriceQty);
+      }
+      case PromotionType.Percent: {
+        return product.price * quantity * (1 - product.promotion.percent);
+      }
+    }
   }
 }

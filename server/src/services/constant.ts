@@ -62,7 +62,7 @@ export const COUPONS_CONSTANT: { [id: string]: Coupon } = {
 export const CARTS_CONSTANT: { [id: string]: Cart } = {
   '90512cc5-647b-4b45-8a75-fb29dc995c43': {
     id: '90512cc5-647b-4b45-8a75-fb29dc995c43',
-    content: [
+    items: [
       {
         quantity: 1,
         productId: 'fe51f619-354a-4cb1-8536-251864b017cc'

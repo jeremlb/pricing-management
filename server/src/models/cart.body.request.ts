@@ -6,15 +6,15 @@ import { IsNonPrimitiveArray } from 'src/decorators';
 export class CreateCartDto {
     @ValidateNested({ each: true })
     @IsNonPrimitiveArray()
-    @Type(() => CartContentDto)
-    content!: CartContentDto[];
+    @Type(() => CartItemDto)
+    items!: CartItemDto[];
 
     @IsOptional()
     @MaxLength(MAX_COUPONS_CODE_LENGTH)
     coupon!: string;
 }
 
-export class CartContentDto {
+export class CartItemDto {
     @IsUUID('4')
     productId: string;
 
