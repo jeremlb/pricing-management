@@ -1,6 +1,6 @@
 <template>
   <div class="carts-history">
-    {{ carts }}
+    <cart-component v-for="cart of carts" v-bind:key="cart.id" :cart="cart" />
   </div>
 </template>
 
@@ -9,7 +9,9 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import { CartAction } from '../store/carts/cart.actions';
 import { Cart } from '../models';
 
-@Component({})
+import CartComponent from '../components/Cart.vue';
+
+@Component({ components: { CartComponent }})
 export default class CartHistory extends Vue {
   carts: Cart[] = [];
 

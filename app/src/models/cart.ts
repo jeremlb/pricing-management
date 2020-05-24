@@ -11,6 +11,13 @@ export interface Cart {
   updateAt?: Date;
 }
 
-export interface CartAmount {
+export interface CartAmountItem {
+  productId: string;
   amount: number;
 }
+
+export interface CartAmount {
+  total: number;
+  items: CartAmountItem[];
+}
+
