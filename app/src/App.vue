@@ -21,23 +21,21 @@
 </template>
 
 <script lang="ts">
-import Login from '@/components/Login.vue'
 
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import { User } from './models';
 
 @Component({
-  components: { Login },
   computed: { ...mapGetters(['currentUser']) },
 })
 export default class App extends Vue {
   readonly currentUser!: User;
 
   mounted() {
-    if (!this.currentUser) {
-      this.$router.push({ name: 'login' });
-    }
+  //   if (!this.currentUser) {
+  //     this.$router.push({ name: 'login' });
+  //   }
   }
 }
 </script>

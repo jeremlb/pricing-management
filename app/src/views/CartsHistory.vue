@@ -1,5 +1,6 @@
 <template>
   <div class="login">
+    coucou
     <button @click="logAs('user')">Log as user</button>
     <button @click="logAs('admin')">Log as admin</button>
   </div>
@@ -14,9 +15,9 @@ import { mapGetters } from 'vuex';
 @Component({
   computed: { ...mapGetters([]) },
 })
-export default class Login extends Vue {
+export default class CartHistory extends Vue {
   async beforeMount() {
-    await this.$store.dispatch(UserAction.setUser, { type: null });
+    await this.$store.dispatch(UserAction.setUser, null);
   }
 
   async logAs(userType: UserType) {
