@@ -1,6 +1,8 @@
-export interface Product {
+export class Product {
     id: string;
     name: string;
     description?: string;
     price: number;
+    createdAt: Date;
+    updateAt?: Date;
 }
