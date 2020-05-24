@@ -2,6 +2,7 @@ import { Controller, Query, Get, Post, HttpCode, Param, Body, Put, Delete, NotFo
 import { CartsService } from 'src/services';
 import { ParseDatePipe } from 'src/pipes';
 import { Cart, CreateCartDto } from 'src/models';
+import { CartAmountResponse } from 'src/models/cart-amount.response';
 
 @Controller('/v1/carts')
 export class CartsController {
@@ -30,9 +31,9 @@ export class CartsController {
   }
 
   @Get(':id/amount')
-  async getCartAmount(@Param('id') id: string): Promise<{ amount: number }> { 
+  async getCartAmount(@Param('id') id: string): Promise<CartAmountResponse> { 
     const cart = await this.getById(id);
-    return { amount: this.carts.getCartAmount(cart) };
+    return this.carts.getCartAmount(cart);
   }
 
   @Put(':id')

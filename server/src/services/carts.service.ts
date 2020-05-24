@@ -3,6 +3,7 @@ import { Cart, CreateCartDto, CartItem, CouponType, Product, PromotionType } fro
 import { ProductsService } from './products.service';
 import { CouponsService } from './coupons.service';
 import { CARTS_CONSTANT } from './constant';
+import { CartAmountItem, CartAmountResponse } from 'src/models/cart-amount.response';
 const { v4: uuidv4 } = require('uuid');
 
 let CARTS: { [id: string]: Cart; } = { ...CARTS_CONSTANT };
@@ -59,14 +60,25 @@ export class CartsService {
     return false;
   }
 
-  getCartAmount(cart: Cart): number {
-    let amount = this.getItemsAmount(cart.items);
+  getCartAmount(cart: Cart): CartAmountResponse {
+    let total = 0;
+    const items: CartAmountItem[] = [];
 
-    if (cart.coupon) {
-      amount = this.applyCartCoupon(amount, cart.coupon);
+    for (let item of cart.items) {
+      const product = this.products.getById(item.productId);
+
+      if (product) {
+        const amount = this.getProductAmount(product, item.quantity);
+        items.push({ productId: item.productId, amount });
+        total += amount;
+      }
     }
 
-    return Math.round(amount * 100) / 100;
+    if (cart.coupon) {
+      total = this.applyCartCoupon(total, cart.coupon);
+    }
+
+    return { total: Math.round(total * 100) / 100, items };
   }
 
   resetDataset() {
@@ -97,20 +109,6 @@ export class CartsService {
         break;
       }
     }
-  }
-
-  private getItemsAmount(items: CartItem[]): number {
-    let amount = 0;
-
-    for (let item of items) {
-      const product = this.products.getById(item.productId);
-
-      if (product) {
-        amount += this.getProductAmount(product, item.quantity);
-      }
-    }
-
-    return amount;
   }
 
   private getProductAmount(product: Product, quantity: number): number {
