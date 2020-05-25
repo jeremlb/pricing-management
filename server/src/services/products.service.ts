@@ -56,7 +56,12 @@ export class ProductsService {
 
     // this is a percentage, it is a number between 0 and 1
     if (payload.type === PromotionType.Percent && payload.percent > 1) {
-      throw new BadRequestException(); 
+      throw new BadRequestException();
+    }
+
+    // can't set a promotion if one already exists
+    if (PRODUCTS[id].promotion) {
+      throw new BadRequestException();
     }
 
     if (PRODUCTS[id]) {
