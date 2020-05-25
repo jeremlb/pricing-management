@@ -25,8 +25,14 @@ CartAction,
   //   console.log(params)
   //   commit(UserMutation.setUserType, );
   // },
-  async [CartAction.getCarts]({}): Promise<Cart[]> {
-    const response = await axios.get<Cart[]>(BASE_URL + '/v1/carts');
+  async [CartAction.getCarts]({}, queries: any = {}): Promise<Cart[]> {
+    let url = BASE_URL + '/v1/carts?';
+
+    if (queries.from && queries.to) {
+      url += `from=${queries.from}&to=${queries.to}`;
+    }
+
+    const response = await axios.get<Cart[]>(url);
     return response.data;
   },
   async [CartAction.getCartAmount]({}, id: string): Promise<CartAmount> {
