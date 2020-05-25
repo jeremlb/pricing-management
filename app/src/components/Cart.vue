@@ -1,10 +1,10 @@
 <template>
   <div class="cart">
-    <p>creation date {{ cart.createdAt }}</p>
+    <div class="cart__creation-date">{{ getFormattedCartCreationDate() }}</div>
 
-    {{ cartProducts }}
+    <b-table class="cart__table" bordered hover :items="cartProducts" :fields="fields"></b-table>
 
-    <p>total {{ cartAmount.total }}</p>
+    <div class="cart__total-amount">total {{ cartAmount.total }}</div>
   </div>
 </template>
 
@@ -22,6 +22,15 @@ interface CartProduct {
 }
 
 @Component({
+  data() {
+    return {
+      fields: [
+        { key: 'name', sortable: true, label: 'Product name' },
+        { key: 'description', label: 'Description' },
+        { key: 'amount', label: 'Price' },
+      ]
+    }
+  },
   props: {
     cart: { type: Object, required: true },
   }
@@ -41,8 +50,30 @@ export default class CartComponent extends Vue {
       this.cartProducts.push({ id, name, description, amount: amountItem.amount });
     }
   }
+
+  getFormattedCartCreationDate() {
+    const date = new Date(this.cart.createdAt);
+
+    return `${date.toISOString().split('T')[0]} ${date.getHours()}:${date.getMinutes()}`;
+  }
 }
 </script>
 
 <style scoped lang="scss">
+.cart {
+  border: 1px solid #ced4da;
+  padding: 16px;
+
+  &__creation-date {
+    text-align: left;
+  }
+
+  &__table {
+    margin: 32px 0;
+  }
+
+  &__total-amount {
+    text-align: right;
+  }
+}
 </style>

@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
-import { Product, Coupon, CouponType, Cart } from "src/models";
+import { Product, Coupon, CouponType, Cart } from 'src/models';
 
 // helpers
 function randomDate(start, end): Date {
@@ -34,8 +34,17 @@ export const PRODUCTS_CONSTANT: { [id: string]: Product } = {
   'fe51f619-354a-4cb1-8536-251864b017cc': {
     id: 'fe51f619-354a-4cb1-8536-251864b017cc',
     name: 'product test',
+    description: 'This is a description for this product 1',
     price: 5600.58,
-    createdAt: new Date("2020-02-25T11:41:15.073Z"),
+    createdAt: new Date('2020-02-25T11:41:15.073Z'),
+    updateAt: null
+  },
+  '973d1d6f-f169-4433-b277-d3d6022644a3': {
+    id: '973d1d6f-f169-4433-b277-d3d6022644a3',
+    name: 'product test 2',
+    description: 'This is a description for this product 2',
+    price: 100,
+    createdAt: new Date('2020-01-12T08:10:22.586Z'),
     updateAt: null
   },
 };
@@ -66,6 +75,10 @@ export const CARTS_CONSTANT: { [id: string]: Cart } = {
       {
         quantity: 1,
         productId: 'fe51f619-354a-4cb1-8536-251864b017cc'
+      },
+      {
+        quantity: 10,
+        productId: '973d1d6f-f169-4433-b277-d3d6022644a3'
       }
     ],
     coupon: 'COUPON_P',

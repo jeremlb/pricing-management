@@ -16,7 +16,7 @@ export default class CartDatePicker extends Vue {
   to: string = new Date().toISOString();
 
   mounted() {
-    this.$emit('changed', { from: this.from, to: this.to });
+    this.toChanged();
   }
 
   fromChanged() {
@@ -24,14 +24,15 @@ export default class CartDatePicker extends Vue {
   }
 
   toChanged() {
-    this.$emit('changed', { from: this.from, to: this.to });
+    const from = `${new Date(this.from).toISOString().split('T')[0]}T00:00:00Z`;
+    const to = `${new Date(this.to).toISOString().split('T')[0]}T23:59:59Z`;
+    this.$emit('changed', { from, to });
   }
 }
 </script>
 
 <style scoped lang="scss">
 .cart-date-picker {
-  margin: 32px 0;
   display: flex;
   align-items: center;
   justify-content: left;

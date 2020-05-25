@@ -1,7 +1,7 @@
 <template>
-  <div class="carts-history">
-    <cart-date-picker-component @changed="selectedPeriodChanged($event)"/>
-    <cart-component v-for="cart of carts" v-bind:key="cart.id" :cart="cart" />
+  <div class="cart-history">
+    <cart-date-picker-component class="cart-history__date-picker" @changed="selectedPeriodChanged($event)"/>
+    <cart-component class="cart-history__cart" v-for="cart of carts" v-bind:key="cart.id" :cart="cart" />
   </div>
 </template>
 
@@ -23,5 +23,17 @@ export default class CartHistory extends Vue {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
+.cart-history {
+  padding: 0 64px;
+  
+  &__date-picker {
+    margin: 32px 0;
+  }
+
+  &__cart {
+    margin-bottom: 32px;
+  }
+}
+
 </style>
