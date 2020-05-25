@@ -1,5 +1,5 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { Coupon, CreateCouponDto } from 'src/models';
+import { Coupon, CreateCouponDto, CouponType } from 'src/models';
 import { COUPONS_CONSTANT } from './constant';
 const { v4: uuidv4 } = require('uuid');
 
@@ -34,6 +34,11 @@ export class CouponsService {
 
     if (this.getByCode(payload.code)) {
       throw new BadRequestException();
+    }
+
+    // this is a percentage, it is a number between 0 and 1
+    if (payload.type === CouponType.Percent && payload.value > 1) {
+      throw new BadRequestException(); 
     }
 
     COUPONS[id] = { id, ...payload, createdAt: new Date(), updateAt: null };

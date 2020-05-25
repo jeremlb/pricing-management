@@ -54,6 +54,11 @@ export class ProductsService {
       throw new BadRequestException();
     }
 
+    // this is a percentage, it is a number between 0 and 1
+    if (payload.type === PromotionType.Percent && payload.percent > 1) {
+      throw new BadRequestException(); 
+    }
+
     if (PRODUCTS[id]) {
       PRODUCTS[id] = { ...PRODUCTS[id], updateAt: new Date(), promotion: payload };
     }
