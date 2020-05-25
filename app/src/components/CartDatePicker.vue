@@ -2,7 +2,7 @@
   <div class="cart-date-picker">
     <span>Display all carts starting from</span> 
     <b-form-datepicker class="cart-date-picker__picker" v-model="from" @input="fromChanged()"></b-form-datepicker>
-    <span>until {{ to}}</span>
+    <span>until</span>
     <b-form-datepicker class="cart-date-picker__picker" :min="from" v-model="to" @input="toChanged()"></b-form-datepicker>
   </div>
 </template>
@@ -30,4 +30,15 @@ export default class CartDatePicker extends Vue {
 </script>
 
 <style scoped lang="scss">
+.cart-date-picker {
+  margin: 32px 0;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+
+  &__picker {
+    width: 350px;
+    margin: 0 8px;
+  }
+}
 </style>
